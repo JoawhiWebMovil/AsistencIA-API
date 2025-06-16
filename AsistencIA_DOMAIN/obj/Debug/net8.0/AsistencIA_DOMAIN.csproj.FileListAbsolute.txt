@@ -1,0 +1,15 @@
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\obj\Debug\net8.0\AsistencIA_DOMAIN.csproj.AssemblyReference.cache
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\obj\Debug\net8.0\AsistencIA_DOMAIN.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\obj\Debug\net8.0\AsistencIA_DOMAIN.AssemblyInfoInputs.cache
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\obj\Debug\net8.0\AsistencIA_DOMAIN.AssemblyInfo.cs
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\obj\Debug\net8.0\AsistencIA_DOMAIN.csproj.CoreCompileInputs.cache
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\obj\Debug\net8.0\AsistencIA_DOMAIN.sourcelink.json
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\bin\Debug\net8.0\AsistencIA_DOMAIN.deps.json
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\bin\Debug\net8.0\AsistencIA_DOMAIN.runtimeconfig.json
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\bin\Debug\net8.0\AsistencIA_DOMAIN.dll
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\bin\Debug\net8.0\AsistencIA_DOMAIN.pdb
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\obj\Debug\net8.0\AsistencIA_DOMAIN.dll
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\obj\Debug\net8.0\refint\AsistencIA_DOMAIN.dll
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\obj\Debug\net8.0\AsistencIA_DOMAIN.pdb
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\obj\Debug\net8.0\AsistencIA_DOMAIN.genruntimeconfig.cache
+C:\Users\USUARIO\Desktop\AsistencIA\Backend\AsistencIA_DOMAIN\obj\Debug\net8.0\ref\AsistencIA_DOMAIN.dll
