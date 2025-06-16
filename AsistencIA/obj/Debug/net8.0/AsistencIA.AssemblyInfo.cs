@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AsistencIA")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c8a25a32f9803bb485859b1ab16193d668a7f7a5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9fb8d0357b54866bd1d5bcf2f67ef114d91d61b1")]
 [assembly: System.Reflection.AssemblyProductAttribute("AsistencIA")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AsistencIA")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
