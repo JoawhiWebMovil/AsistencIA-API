@@ -1,0 +1,6 @@
+@AsistencIA_HostAddress = http://localhost:5298
+
+GET {{AsistencIA_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
