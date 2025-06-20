@@ -26,6 +26,8 @@ public partial class DbAsistencIaDbContext : DbContext
 
     public virtual DbSet<Usuarios> Usuarios { get; set; }
 
+    public virtual DbSet<Matriculas> Matriculas { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=DESKTOP-68O5AFS\\SQLEXPRESS;Database=DB_AsistencIA;Trusted_Connection=True;TrustServerCertificate=True");
@@ -175,6 +177,30 @@ public partial class DbAsistencIaDbContext : DbContext
                         j.IndexerProperty<int>("IdUsuario").HasColumnName("id_usuario");
                         j.IndexerProperty<int>("IdSeccion").HasColumnName("id_seccion");
                     });
+        });
+
+        modelBuilder.Entity<Matriculas>(entity =>
+        {
+            entity.HasKey(e => new { e.IdUsuario, e.IdSeccion }); // clave compuesta
+
+            entity.Property(e => e.IdUsuario)
+                  .HasColumnName("id_usuario")
+                  .HasMaxLength(100) // Usa el mismo tamaño que en tu DB
+                  .IsRequired();
+
+            entity.Property(e => e.IdSeccion)
+                  .HasColumnName("id_seccion");
+
+            // Relaciones
+            entity.HasOne(d => d.Usuario)
+                  .WithMany(p => p.Matriculas)
+                  .HasForeignKey(d => d.IdUsuario)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(d => d.Seccion)
+                  .WithMany(p => p.Matriculas)
+                  .HasForeignKey(d => d.IdSeccion)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
 
         OnModelCreatingPartial(modelBuilder);
