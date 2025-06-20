@@ -17,6 +17,14 @@ builder.Services.AddTransient<IJWTService, JWTService>();
 
 builder.Services.AddSharedInfrastructure(_config);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", builder =>
+        builder.AllowAnyOrigin()   // Permite cualquier origen
+               .AllowAnyMethod()   // Permite cualquier método HTTP (GET, POST, etc.)
+               .AllowAnyHeader()); // Permite cualquier cabecera
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -31,7 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Aplicar CORS
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
 
