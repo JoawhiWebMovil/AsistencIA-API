@@ -17,4 +17,7 @@ public partial class Secciones
     public virtual ICollection<Sesiones> Sesiones { get; set; } = new List<Sesiones>();
 
     public virtual ICollection<Usuarios> IdUsuario { get; set; } = new List<Usuarios>();
+
+    public virtual ICollection<Matriculas> Matriculas { get; set; } = new List<Matriculas>();
+
 }

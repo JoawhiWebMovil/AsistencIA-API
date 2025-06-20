@@ -29,4 +29,7 @@ public partial class Usuarios
     public virtual ICollection<Asistencias> Asistencias { get; set; } = new List<Asistencias>();
 
     public virtual ICollection<Secciones> IdSeccion { get; set; } = new List<Secciones>();
+
+    public virtual ICollection<Matriculas> Matriculas { get; set; } = new List<Matriculas>();
+
 }

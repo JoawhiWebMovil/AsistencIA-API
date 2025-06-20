@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AsistencIA_DOMAIN.Data;
 using AsistencIA_DOMAIN.Core.Entities;
+using AsistencIA_DOMAIN.Core.DTOs;
 
 namespace AsistencIA.Controllers
 {
@@ -21,84 +22,48 @@ namespace AsistencIA.Controllers
             _context = context;
         }
 
-        // GET: api/Asistencias
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Asistencias>>> GetAsistencias()
-        {
-            return await _context.Asistencias.ToListAsync();
-        }
-
-        // GET: api/Asistencias/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Asistencias>> GetAsistencias(int id)
-        {
-            var asistencias = await _context.Asistencias.FindAsync(id);
-
-            if (asistencias == null)
-            {
-                return NotFound();
-            }
-
-            return asistencias;
-        }
-
-        // PUT: api/Asistencias/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsistencias(int id, Asistencias asistencias)
-        {
-            if (id != asistencias.IdAsistencia)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(asistencias).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AsistenciasExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Asistencias
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Asistencias>> PostAsistencias(Asistencias asistencias)
+        public IActionResult RegistrarAsistencia([FromBody] AsistenciaCreateRequest request)
         {
-            _context.Asistencias.Add(asistencias);
-            await _context.SaveChangesAsync();
+            // Verificamos que no exista una asistencia duplicada
+            var existente = _context.Asistencias
+                .FirstOrDefault(a => a.IdSesion == request.IdSesion && a.IdUsuario == request.IdUsuario);
 
-            return CreatedAtAction("GetAsistencias", new { id = asistencias.IdAsistencia }, asistencias);
-        }
+            if (existente != null)
+                return Conflict("La asistencia ya ha sido registrada para este usuario en esta sesión.");
 
-        // DELETE: api/Asistencias/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsistencias(int id)
-        {
-            var asistencias = await _context.Asistencias.FindAsync(id);
-            if (asistencias == null)
+            var nueva = new Asistencias
             {
-                return NotFound();
-            }
+                IdSesion = request.IdSesion,
+                IdUsuario = request.IdUsuario,
+                Estado = request.Estado,
+                Timestamp = DateTime.Now
+            };
 
-            _context.Asistencias.Remove(asistencias);
-            await _context.SaveChangesAsync();
+            _context.Asistencias.Add(nueva);
+            _context.SaveChanges();
 
-            return NoContent();
+            return Ok("Asistencia registrada correctamente.");
         }
+
+        [HttpPut]
+        public IActionResult ActualizarAsistencia([FromBody] AsistenciaUpdateRequest request)
+        {
+            var asistencia = _context.Asistencias
+                .FirstOrDefault(a => a.IdSesion == request.IdSesion && a.IdUsuario == request.IdUsuario);
+
+            if (asistencia == null)
+                return NotFound("Asistencia no encontrada.");
+
+            asistencia.Estado = request.NuevoEstado;
+            asistencia.Timestamp = DateTime.Now;
+
+            _context.SaveChanges();
+
+            return Ok("Asistencia actualizada correctamente.");
+        }
+
+        
 
         private bool AsistenciasExists(int id)
         {

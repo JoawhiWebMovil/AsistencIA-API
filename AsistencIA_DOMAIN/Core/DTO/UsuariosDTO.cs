@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PromcoserDOMAIN.Core.DTOs
+namespace AsistencIA_DOMAIN.Core.DTOs
 {
     
     public class UsuariosResponseAuthDTO

@@ -20,83 +20,34 @@ namespace AsistencIA.Controllers
             _context = context;
         }
 
-        // GET: api/Sesiones
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Sesiones>>> GetSesiones()
+        [HttpGet("asistenciaAlumnos/{idSesion}")]
+        public IActionResult GetAlumnosPorSesion(int idSesion)
         {
-            return await _context.Sesiones.ToListAsync();
-        }
+            // Obtener la sección de la sesión
+            var idSeccion = _context.Sesiones
+                .Where(s => s.IdSesion == idSesion)
+                .Select(s => s.IdSeccion)
+                .FirstOrDefault();
 
-        // GET: api/Sesiones/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Sesiones>> GetSesiones(int id)
-        {
-            var sesiones = await _context.Sesiones.FindAsync(id);
+            if (idSeccion == 0)
+                return NotFound("Sesión no encontrada.");
 
-            if (sesiones == null)
-            {
-                return NotFound();
-            }
+            var alumnos = (from m in _context.Matriculas
+                           join u in _context.Usuarios on m.IdUsuario equals u.IdUsuario
+                           join a in _context.Asistencias
+                               on new { m.IdUsuario, IdSesion = idSesion } equals new { a.IdUsuario, a.IdSesion }
+                               into asistenciaJoin
+                           from asistencia in asistenciaJoin.DefaultIfEmpty()
+                           where m.IdSeccion == idSeccion && u.Rol == "alumno"
+                           select new
+                           {
+                               idUsuario = u.IdUsuario,
+                               nombreCompleto = u.Nombre + " " + u.Apellidos,
+                               foto = u.FotoReferencia,
+                               estado = asistencia != null ? asistencia.Estado : null,                     
+                           }).ToList();
 
-            return sesiones;
-        }
-
-        // PUT: api/Sesiones/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSesiones(int id, Sesiones sesiones)
-        {
-            if (id != sesiones.IdSesion)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(sesiones).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SesionesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Sesiones
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Sesiones>> PostSesiones(Sesiones sesiones)
-        {
-            _context.Sesiones.Add(sesiones);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSesiones", new { id = sesiones.IdSesion }, sesiones);
-        }
-
-        // DELETE: api/Sesiones/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSesiones(int id)
-        {
-            var sesiones = await _context.Sesiones.FindAsync(id);
-            if (sesiones == null)
-            {
-                return NotFound();
-            }
-
-            _context.Sesiones.Remove(sesiones);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(alumnos);
         }
 
         private bool SesionesExists(int id)

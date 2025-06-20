@@ -1,5 +1,5 @@
 ﻿using AsistencIA_DOMAIN.Core.Interfaces;
-using PromcoserDOMAIN.Core.DTOs;
+using AsistencIA_DOMAIN.Core.DTOs;
 
 namespace AsistencIA_DOMAIN.Core.Concrete
 {

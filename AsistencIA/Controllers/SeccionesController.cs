@@ -20,83 +20,40 @@ namespace AsistencIA.Controllers
             _context = context;
         }
 
-        // GET: api/Secciones
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Secciones>>> GetSecciones()
+        // GET: api/Secciones/alumnos
+        [HttpGet("alumnos/{idSeccion}")]
+        public IActionResult GetUsuariosPorSeccion(int idSeccion)
         {
-            return await _context.Secciones.ToListAsync();
+            var usuarios = (from m in _context.Matriculas
+                            join u in _context.Usuarios on m.IdUsuario equals u.IdUsuario
+                            where m.IdSeccion == idSeccion && u.Rol == "alumno"
+                            select new
+                            {
+                                idUsuario = u.IdUsuario,
+                                nombreCompleto = u.Nombre + " " + u.Apellidos,
+                                foto = u.FotoReferencia
+                            }).ToList();
+
+            return Ok(usuarios);
         }
 
-        // GET: api/Secciones/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Secciones>> GetSecciones(int id)
+        [HttpGet("sesiones/{idSeccion}")]
+        public IActionResult GetSesionesPorSeccion(int idSeccion)
         {
-            var secciones = await _context.Secciones.FindAsync(id);
-
-            if (secciones == null)
-            {
-                return NotFound();
-            }
-
-            return secciones;
-        }
-
-        // PUT: api/Secciones/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSecciones(int id, Secciones secciones)
-        {
-            if (id != secciones.IdSeccion)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(secciones).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SeccionesExists(id))
+            var sesiones = _context.Sesiones
+                .Where(s => s.IdSeccion == idSeccion)
+                .Select(s => new
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                    s.IdSesion,
+                    s.Fecha,
+                    s.HoraInicio,
+                    s.ImagenUrl,
+                    s.Estado,
+                    s.TipoIngreso
+                })
+                .ToList();
 
-            return NoContent();
-        }
-
-        // POST: api/Secciones
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Secciones>> PostSecciones(Secciones secciones)
-        {
-            _context.Secciones.Add(secciones);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSecciones", new { id = secciones.IdSeccion }, secciones);
-        }
-
-        // DELETE: api/Secciones/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSecciones(int id)
-        {
-            var secciones = await _context.Secciones.FindAsync(id);
-            if (secciones == null)
-            {
-                return NotFound();
-            }
-
-            _context.Secciones.Remove(secciones);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(sesiones);
         }
 
         private bool SeccionesExists(int id)
