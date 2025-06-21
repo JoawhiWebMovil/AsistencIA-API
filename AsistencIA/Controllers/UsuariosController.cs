@@ -35,7 +35,16 @@ namespace AsistencIA.Controllers
             return Ok(result);
         }
 
-        // GET: api/GetMisSecciones
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePwd([FromBody] UsuariosRequestChangePasswordDTO userChangPwdDTO)
+        {
+            if (userChangPwdDTO.Usuario == "" || userChangPwdDTO.Contrasena == "" || userChangPwdDTO.NewContrasena == "") return BadRequest();
+
+            var result = await _usuariosService.ChangePwd(userChangPwdDTO.Usuario, userChangPwdDTO.Contrasena, userChangPwdDTO.NewContrasena);
+            if (result == null) return NotFound();
+            return Ok(result);
+        }
+
         [HttpGet("secciones/{idDocente}")]
         public IActionResult GetSeccionesPorDocente(string idDocente)
         {
